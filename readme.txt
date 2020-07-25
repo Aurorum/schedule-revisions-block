@@ -34,6 +34,11 @@ No, there isn't - your content will be safely hidden until that time has passed.
 
 Feel free to send an email or a message with any issues - I'll try to respond quickly!
 
+== Screenshots ==
+
+1. On inserting the block, you will be prompted with a way to schedule when the content should appear/disappear
+2. You can always change your mind about the timing of your content's appearance/disappearance.
+
 == Changelog ==
 
 = 1.0 =
