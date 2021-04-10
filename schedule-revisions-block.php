@@ -3,7 +3,7 @@
  * Plugin Name:     Schedule Revisions
  * Plugin URI:      https://github.com/Aurorum/schedule-revisions-block
  * Description:     Control when content (or revisions) appear or disappear in your posts through a new Gutenberg block.
- * Version:         0.1.0
+ * Version:         1.1
  * Author:          Aurorum
  * License:         GPL-2.0-or-later
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
@@ -47,11 +47,21 @@ function schedule_revisions_schedule_revisions_block_block_init() {
 }
 add_action( 'init', 'schedule_revisions_schedule_revisions_block_block_init' );
 
+function schedule_revisions_query_vars( $qvars ) {
+    $qvars[] = 'schedulerevisions';
+    return $qvars;
+}
+add_filter( 'query_vars', 'schedule_revisions_query_vars' );
+
 function render_schedule_revisions_block($attr, $content = '') {
 	$date   = isset( $attr['date'] ) ? $attr['date'] : 0;
 	$time   = $date - ( strtotime( current_time( 'mysql' ) ) * 1000 );
 	$option = isset( $attr['radioOption'] ) ? $attr['radioOption'] : 'displayBlock';
-	if ( ( $date === 0 && $option === 'displayBlock'  ) || ( $time < 0 && $option === 'displayBlock' ) || ( $time > 0 && $option === 'hideBlock' ) ) {
+	if ( 
+		( current_user_can( 'manage_options' ) && get_query_var( 'schedulerevisions' ) ) || 
+		( $date === 0 && $option === 'displayBlock'  ) || ( $time < 0 && $option === 'displayBlock' ) || 
+		( $time > 0 && $option === 'hideBlock' ) 
+	) {
 		return $content;
 	}
 }
